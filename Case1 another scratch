@@ -1,0 +1,54 @@
+#include <iostream>
+#include<cmath>
+
+using namespace std;
+
+
+// present value is substructed from the opening value for each period
+double PMT(double r, double PMT, double temp, double PV, double n) {
+    temp=(pow((1+r), n))-1; // temp OK
+    PMT= PV*(r+(r/temp));
+    return PMT;
+}
+
+int main(int argc, char *argv[]) {
+    double r, PMT, temp, PV, n;
+    int frequency;
+    int openingMonth, openingYear;
+    double openingBalance = PV;
+    double principal = PV/n;
+    double periodicInterestRate = r/(12/frequency);
+    double interest = openingBalance*periodicInterestRate;
+    double installment = principal+interest;
+    double closingBalance = openingBalance-principal;
+    // variables holding current month and year values (at each row)
+    int tempMonth = openingMonth;
+    int tempYear = openingYear;
+    PMT[i]=P[i]+Int[i]
+    Int[i]=PV[i-1]*r[i]
+    PV[i]=PV[i-1]-P[i]
+    PV[n]=0
+
+    cout<<"Number"<<"\t"<<"Period"<<"\t"<<"Opening Balance"<<"\t"<<"Principal"<<"\t"<<"periodic interest rate"<<"\t"<<"interest"<<"\t"<<"installment"<<"\t"<<"Closing Balance"<<endl;
+    for (int i = 1; i <= n; i++) 
+    cout<<"i"<<"\t"<<"Date"<<"\t"<<"PV[i-1]"<<"\t"<<"P[i]"<<"\t"<<"r[i]"<<"\t"<<"Int[i]"<<"\t"<<"PMT[i]"<<"\t"<<"PV[i]"<<endl;{
+        cout<<i<<"\t"<<tempMonth<<"/"<<tempYear<<"\t"<<openingBalance<<"\t"<<principal<<"\t"<<periodicInterestRate<<"\t"<<interest<<"\t"<<installment<<"\t"<<closingBalance<<endl;
+        // temporary month value to be recalculated after each iteration
+        // at each iteration increase month value by frequency
+        tempMonth += frequency;
+        // if the end of year
+        if (tempMonth > 12) {
+            // reset month value to january
+            tempMonth = 1;
+            // increase year
+            tempYear++; 
+        }       
+        openingBalance = closingBalance;
+        interest = openingBalance*periodicInterestRate;
+        installment = principal+interest;
+        closingBalance = openingBalance-principal;
+        
+    }
+    
+    return 0;
+}
