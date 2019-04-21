@@ -26,10 +26,13 @@ int main(int argc, char *argv[]) {
     double r, PMT, temp, PV, n;
     int frequency;
     int openingMonth, openingYear;
-    int lBound=0;
+    int lBound=0, lBoundMonth=1,uBoundMonth=12;
 
-    cout << "Please provide " << "PV: ";
-    cin >> PV;
+
+    do {
+        cout << "Please provide a PV equal or bigger than " <<lBound<<endl;
+        cin >> PV;
+    }while (PV<0);
 
     do
 
@@ -40,14 +43,22 @@ int main(int argc, char *argv[]) {
     } while (r<=0);
 
 
-
-
-    cout << "Number of compounding periods: " << endl;
+    do
+    {
+    cout << "Number of compounding periods bigger than " <<lBound<<endl;
     cin >> n;
-    cout << "Current month" << endl;
+    } while(n<=0);
+
+
+    do
+    {
+    cout << "Current month in number within the range " <<lBoundMonth<<" to "<<uBoundMonth<< endl;
     cin >> openingMonth;
+    } while (openingMonth<1 || openingMonth>12);
+
     cout << "Current year" << endl;
     cin >> openingYear;
+
     cout << "Frequency (1: monthly, 3: quarterly, 6: semi-annually, 12: annually)" << endl;
     cin >> frequency;
     double openingBalance = PV;
