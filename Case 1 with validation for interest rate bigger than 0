@@ -61,11 +61,24 @@ int main(int argc, char *argv[]) {
     int tempYear = openingYear;
 
 
-//Saves the output in csv format
-
 char listSeparator=';';
 ofstream csvFile;
 csvFile.open("output.csv");
+
+
+
+//for (int j=1;j<9;j++)
+//{
+csvFile<<"Case 1:"<<listSeparator<<"Fixed principal interest payments and fixed interest rate"<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<endl;
+//}
+
+    csvFile<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<endl;
+    csvFile<<"input"<<listSeparator<<"PV"<<listSeparator<<PV<<endl;
+    csvFile<<""<<listSeparator<<"frequency"<<listSeparator<<frequency<<endl;
+    csvFile<<""<<listSeparator<<"# of periods"<<listSeparator<<n<<endl;
+    csvFile<<""<<listSeparator<<"interest rate"<<listSeparator<<r<<endl;
+    csvFile<<""<<listSeparator<<"start month"<<listSeparator<<openingMonth<<endl;
+    csvFile<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<endl;
 
 
     csvFile<<"PN"<<listSeparator<<"Date"<<listSeparator<<"OB"<<listSeparator<<"Princ"<<listSeparator<<"r"<<listSeparator<<"inter"<<listSeparator<<"install"<<listSeparator<<"CB"<<endl;
