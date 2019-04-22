@@ -4,22 +4,10 @@
 
 using namespace std;
 
-// Definition of Schedule class
-class Schedule {
-    // class parameters to be calculated
-    int periodNumber;
-    double openingBalance;
-    double principal;
-    float interestRate;
-    double installment;
-    double closingBalance;
-};
-
-
 
 int main(int argc, char *argv[]) {
     double r, PV, n;
-    int frequency;
+    double frequency;
     int openingMonth, openingYear;
     int lBound=0, lBoundMonth=1,uBoundMonth=12;
 
@@ -65,21 +53,17 @@ int main(int argc, char *argv[]) {
     double periodicInterestRate = r/(12/frequency);
     double temp=(pow((1+periodicInterestRate), n))-1; // temp OK
     double installment= (PV*periodicInterestRate)*(1+(1/temp));
-
     double interest = openingBalance*periodicInterestRate;
-
     double principal = installment-interest;
-
-
     double closingBalance = openingBalance-principal;
     // variables holding current month and year values (at each row)
-    int tempMonth = openingMonth;
+    double tempMonth = openingMonth;
     int tempYear = openingYear;
 
 
     char listSeparator=';';
     ofstream csvFile;
-    csvFile.open("case3.csv");
+    csvFile.open("case31.csv");
 
 
 
@@ -113,16 +97,12 @@ int main(int argc, char *argv[]) {
         openingBalance = closingBalance;
         interest = openingBalance*periodicInterestRate;
         principal=installment-interest;
-
         closingBalance = openingBalance-principal;
-
-
-
 
     }
 
     csvFile.close();
-    cout << "File saved!" << endl;
+    cout << "File saved as case31.csv!" << endl;
 
     return 0;
 }
