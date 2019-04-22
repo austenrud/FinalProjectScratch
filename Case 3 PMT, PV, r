@@ -8,7 +8,7 @@ using namespace std;
 
 int main(int argc, char *argv[]) {
     double r, PV,installment;
-    int frequency;
+    double frequency;
     int openingMonth, openingYear;
     int lBound=0, lBoundMonth=1,uBoundMonth=12;
 
@@ -54,20 +54,15 @@ int main(int argc, char *argv[]) {
     double temp=(pow((1+periodicInterestRate), n))-1; // temp OK
     //double PV=installment/(periodicInterestRate*(1+(1/temp)));
     double openingBalance = PV;
-
-
     double interest = openingBalance*periodicInterestRate;
-
     double principal = installment-interest;
-
-
     double closingBalance = openingBalance-principal;
     // variables holding current month and year values (at each row)
-    int tempMonth = openingMonth;
+    double tempMonth = openingMonth;
     int tempYear = openingYear;
 
 
-    char listSeparator=';';
+    char listSeparator=',';
     ofstream csvFile;
     csvFile.open("case33.csv");
 
@@ -112,7 +107,7 @@ int main(int argc, char *argv[]) {
     }
 
     csvFile.close();
-    cout << "File saved!" << endl;
+    cout << "File saved as case33.csv!" << endl;
 
     return 0;
 }
