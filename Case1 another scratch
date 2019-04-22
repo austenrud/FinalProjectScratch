@@ -1,68 +1,70 @@
-
-// inlcude iostream and string libraries
 #include <iostream>
+#include<cmath>
 #include <fstream>
-#include <string>
 
 using namespace std;
 
-// create an ofstream for the file output (see the link on streams for
-// more info)
+// Definition of Schedule class
+class Schedule {
+    // class parameters to be calculated
+    int periodNumber;
+    double openingBalance;
+    double principal;
+    float interestRate;
+    double installment;
+    double closingBalance;
+};
+
+// present value is substructed from the opening value for each period
+double PMT(double r, double PMT, double temp, double PV, double n) {
+    temp=(pow((1+r), n))-1; // temp OK
+    PMT= PV*(r+(r/temp));
+    return PMT;
+}
+
+int main(int argc, char *argv[]) {
+    double r=0.04, PV=500000, n=40;
+    int frequency=3;
+    int openingMonth=04, openingYear=2019;
+    int lBound=0, lBoundMonth=1,uBoundMonth=12;
+
+
+    
+    double openingBalance = PV;
+    double principal = PV/n;
+    double periodicInterestRate = r/(12/frequency);
+    double interest = openingBalance*periodicInterestRate;
+    double installment = principal+interest;
+    double closingBalance = openingBalance-principal;
+    
+    // variables holding current month and year values (at each row)
+    int tempMonth = openingMonth;
+    int tempYear = openingYear;
+
 
 char listSeparator=';';
 ofstream csvFile;
-csvFile.open("Case 1.csv")
+csvFile.open("output.csv");
 
-// create some variables for demonstration
-    int PV=500000;
-    int frequency=3;
-    int n=40;
-    int r=0.04;
-    int openingMonth=04/2019;
-    double PV[i-1];
-    double P[i];
-    double periodicInterestRate;
-    double Int[i];
-    double PMT[i];
-    double PV[i];
 
-int main(int argc, char** argv)
 
-    // write the file headers
-   //for (int j=1;j<9;j++)
+//for (int j=1;j<9;j++)
 //{
-csvFile<<"Case 1:"<<listSeparator<<"Fixed principal interest payments and fixed interest rate"<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<endl;
+csvFile << "Case 1:" << listSeparator << "Fixed principal interest payments and fixed interest rate" << listSeparator << "" << listSeparator << "" << listSeparator << ""<< listSeparator << "" << listSeparator << "" << listSeparator << "" << endl;
 //}
 
-    csvFile<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<endl;
-    csvFile<<"input"<<listSeparator<<"PV"<<listSeparator<<PV<<endl;
-    csvFile<<""<<listSeparator<<"frequency"<<listSeparator<<frequency<<endl;
-    csvFile<<""<<listSeparator<<"# of periods"<<listSeparator<<n<<endl;
-    csvFile<<""<<listSeparator<<"interest rate"<<listSeparator<<r<<endl;
-    csvFile<<""<<listSeparator<<"start month"<<listSeparator<<openingMonth<<endl;
-    csvFile<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<endl;
+    csvFile << "" << listSeparator << "" << listSeparator << "" << listSeparator << "" << listSeparator << "" << listSeparator << "" << listSeparator << "" << listSeparator << "" << endl;
+    csvFile << "input" << listSeparator << "PV"<<listSeparator << PV << endl;
+    csvFile << "" << listSeparator << "frequency" << listSeparator << frequency << endl;
+    csvFile << "" << listSeparator << "# of periods" << listSeparator << n << endl;
+    csvFile << "" << listSeparator << "interest rate" << listSeparator << r << endl;
+    csvFile << "" << listSeparator << "start month" << listSeparator << openingMonth << endl;
+    csvFile << "" << listSeparator << ""<< listSeparator << "" << listSeparator << "" << listSeparator << "" << listSeparator << "" << listSeparator << "" << listSeparator << "" << endl;
 
 
-       
-        
-    
-    // i is just a variable to make numbers with in the file
-    i = 40;
-  
-    // write data to the file
-    for (int counter = 0; counter <  10; counter++)
-    {
-        // make some data
-    PV[i-1];
-    P[i] = PV/i;
-    Int[i]=PV[i-1]*r[i];
-    PMT[i]=P[i]+Int[i;
-    PV[i] = PV[i-1]-P[i];
-        
-        // write the data to the output file
-    csvFile<<"PN"<<listSeparator<<"Date"<<listSeparator<<"OB"<<listSeparator<<"Princ"<<listSeparator<<"r"<<listSeparator<<"inter"<<listSeparator<<"install"<<listSeparator<<"CB"<<endl;
+    csvFile << "PN" << listSeparator << "Date" << listSeparator << "OB" << listSeparator << "Princ" << listSeparator<< "r" << listSeparator << "inter" << listSeparator << "install" << listSeparator << "CB" << endl;
     for (int i = 1; i <= n; i++) {
-        csvFile<<i<<listSeparator<<tempMonth<<"/"<<tempYear<<listSeparator<<openingBalance<<listSeparator<<principal<<listSeparator<<periodicInterestRate<<listSeparator<<interest<<listSeparator<<installment<<listSeparator<<closingBalance<<endl;
+        csvFile << i << listSeparator << tempMonth << "/" << tempYear << listSeparator << openingBalance << listSeparator << principal << listSeparator << periodicInterestRate << listSeparator << interest << listSeparator << installment << listSeparator << closingBalance << endl;
         // temporary month value to be recalculated after each iteration
         // at each iteration increase month value by frequency
         tempMonth += frequency;
@@ -77,9 +79,14 @@ csvFile<<"Case 1:"<<listSeparator<<"Fixed principal interest payments and fixed 
         interest = openingBalance*periodicInterestRate;
         installment = principal+interest;
         closingBalance = openingBalance-principal;
-     
-     
-    // close the output file
+
+
+
+
+    }
+
     csvFile.close();
-    return 0;   
+    cout << "File saved!" << endl;
+
+    return 0;
 }
