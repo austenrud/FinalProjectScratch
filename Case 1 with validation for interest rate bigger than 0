@@ -23,7 +23,7 @@ double PMT(double r, double PMT, double temp, double PV, double n) {
 }
 
 int main(int argc, char *argv[]) {
-    double r, PMT, temp, PV, n;
+    double r, PV, n;
     int frequency;
     int openingMonth, openingYear;
     int lBound=0, lBoundMonth=1,uBoundMonth=12;
@@ -32,7 +32,7 @@ int main(int argc, char *argv[]) {
     do {
         cout << "Please provide a PV equal or bigger than " <<lBound<<endl;
         cin >> PV;
-    }while (PV<0);
+    }while (PV<=lBound);
 
     do
 
@@ -40,14 +40,14 @@ int main(int argc, char *argv[]) {
 
     cout << "Enter an Interest rate in percentage bigger than "<<lBound<< endl;
     cin >> r;
-    } while (r<=0);
+    } while (r<lBound);
 
 
     do
     {
     cout << "Number of compounding periods bigger than " <<lBound<<endl;
     cin >> n;
-    } while(n<=0);
+    } while(n<=lBound);
 
 
     do
@@ -61,12 +61,14 @@ int main(int argc, char *argv[]) {
 
     cout << "Frequency (1: monthly, 3: quarterly, 6: semi-annually, 12: annually)" << endl;
     cin >> frequency;
+    
     double openingBalance = PV;
     double principal = PV/n;
     double periodicInterestRate = r/(12/frequency);
     double interest = openingBalance*periodicInterestRate;
     double installment = principal+interest;
     double closingBalance = openingBalance-principal;
+    
     // variables holding current month and year values (at each row)
     int tempMonth = openingMonth;
     int tempYear = openingYear;
@@ -80,21 +82,21 @@ csvFile.open("output.csv");
 
 //for (int j=1;j<9;j++)
 //{
-csvFile<<"Case 1:"<<listSeparator<<"Fixed principal interest payments and fixed interest rate"<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<endl;
+csvFile << "Case 1:" << listSeparator << "Fixed principal interest payments and fixed interest rate" << listSeparator << "" << listSeparator << "" << listSeparator << ""<< listSeparator << "" << listSeparator << "" << listSeparator << "" << endl;
 //}
 
-    csvFile<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<endl;
-    csvFile<<"input"<<listSeparator<<"PV"<<listSeparator<<PV<<endl;
-    csvFile<<""<<listSeparator<<"frequency"<<listSeparator<<frequency<<endl;
-    csvFile<<""<<listSeparator<<"# of periods"<<listSeparator<<n<<endl;
-    csvFile<<""<<listSeparator<<"interest rate"<<listSeparator<<r<<endl;
-    csvFile<<""<<listSeparator<<"start month"<<listSeparator<<openingMonth<<endl;
-    csvFile<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<endl;
+    csvFile << "" << listSeparator << "" << listSeparator << "" << listSeparator << "" << listSeparator << "" << listSeparator << "" << listSeparator << "" << listSeparator << "" << endl;
+    csvFile << "input" << listSeparator << "PV"<<listSeparator << PV << endl;
+    csvFile << "" << listSeparator << "frequency" << listSeparator << frequency << endl;
+    csvFile << "" << listSeparator << "# of periods" << listSeparator << n << endl;
+    csvFile << "" << listSeparator << "interest rate" << listSeparator << r << endl;
+    csvFile << "" << listSeparator << "start month" << listSeparator << openingMonth << endl;
+    csvFile << "" << listSeparator << ""<< listSeparator << "" << listSeparator << "" << listSeparator << "" << listSeparator << "" << listSeparator << "" << listSeparator << "" << endl;
 
 
-    csvFile<<"PN"<<listSeparator<<"Date"<<listSeparator<<"OB"<<listSeparator<<"Princ"<<listSeparator<<"r"<<listSeparator<<"inter"<<listSeparator<<"install"<<listSeparator<<"CB"<<endl;
+    csvFile << "PN" << listSeparator << "Date" << listSeparator << "OB" << listSeparator << "Princ" << listSeparator<< "r" << listSeparator << "inter" << listSeparator << "install" << listSeparator << "CB" << endl;
     for (int i = 1; i <= n; i++) {
-        csvFile<<i<<listSeparator<<tempMonth<<"/"<<tempYear<<listSeparator<<openingBalance<<listSeparator<<principal<<listSeparator<<periodicInterestRate<<listSeparator<<interest<<listSeparator<<installment<<listSeparator<<closingBalance<<endl;
+        csvFile << i << listSeparator << tempMonth << "/" << tempYear << listSeparator << openingBalance << listSeparator << principal << listSeparator << periodicInterestRate << listSeparator << interest << listSeparator << installment << listSeparator << closingBalance << endl;
         // temporary month value to be recalculated after each iteration
         // at each iteration increase month value by frequency
         tempMonth += frequency;
