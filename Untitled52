@@ -1,0 +1,86 @@
+
+#include <iostream>
+#include <stdio.h>
+#include<cmath>
+#include <fstream>
+
+using namespace std;
+
+
+int main(int argc, char *argv[]) {
+    double r=0.04;
+    double PV=250000;
+    int frequency=6;
+    int openingMonth=06, openingYear=2019;
+    int lBound=0, lBoundMonth=1,uBoundMonth=12;
+    double installment=10000.55 (long precision);
+
+
+
+    double periodicInterestRate = r/(12/frequency);
+    double n=log((installment/PV)/((installment/PV)-periodicInterestRate))/(log(1+periodicInterestRate));
+    double temp=(pow((1+periodicInterestRate), n))-1; // temp OK
+    //double PV=installment/(periodicInterestRate*(1+(1/temp)));
+    double openingBalance = PV;
+
+
+    double interest = openingBalance*periodicInterestRate;
+
+    double principal = installment-interest;
+
+
+    double closingBalance = openingBalance-principal;
+    // variables holding current month and year values (at each row)
+    int tempMonth = openingMonth;
+    int tempYear = openingYear;
+
+
+    char listSeparator=';';
+    ofstream csvFile;
+    csvFile.open("case33.csv");
+
+
+
+//for (int j=1;j<9;j++)
+//{
+    csvFile<<"Case 3_2:"<<listSeparator<<"Fixed principal interest payments and instalments given PMT,n and r"<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<endl;
+//}
+
+    csvFile<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<endl;
+    csvFile<<"input"<<listSeparator<<"PV"<<listSeparator<<PV<<endl;
+    csvFile<<""<<listSeparator<<"frequency"<<listSeparator<<frequency<<endl;
+    csvFile<<""<<listSeparator<<"# of periods"<<listSeparator<<n<<endl;
+    csvFile<<""<<listSeparator<<"interest rate"<<listSeparator<<r<<endl;
+    csvFile<<""<<listSeparator<<"start month"<<listSeparator<<openingMonth<<endl;
+    csvFile<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<endl;
+
+
+    csvFile<<"PN"<<listSeparator<<"Date"<<listSeparator<<"OB"<<listSeparator<<"Princ"<<listSeparator<<"r"<<listSeparator<<"inter"<<listSeparator<<"install"<<listSeparator<<"CB"<<endl;
+    for (int i = 1; i <= n; i++) {
+        csvFile<<i<<listSeparator<<tempMonth<<"/"<<tempYear<<listSeparator<<openingBalance<<listSeparator<<principal<<listSeparator<<periodicInterestRate<<listSeparator<<interest<<listSeparator<<installment<<listSeparator<<closingBalance<<endl;
+        // temporary month value to be recalculated after each iteration
+        // at each iteration increase month value by frequency
+        tempMonth += frequency;
+        // if the end of year
+        if (tempMonth > 12) {
+            // reset month value to january
+            tempMonth = (tempMonth-12);
+            // increase year
+            tempYear++;
+        }
+        openingBalance = closingBalance;
+        interest = openingBalance*periodicInterestRate;
+        principal=installment-interest;
+
+        closingBalance = openingBalance-principal;
+
+
+
+
+    }
+
+    csvFile.close();
+    cout << "File saved!" << endl;
+
+    return 0;
+}
