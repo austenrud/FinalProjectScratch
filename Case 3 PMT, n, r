@@ -27,7 +27,7 @@ int main(int argc, char *argv[]) {
 
 
     do {
-        cout << "Please provide an installment  equal or bigger than " <<lBound<<endl;
+        cout << "Please provide an installment equal or bigger than " <<lBound<<endl;
         cin >> installment;
     }while (installment<0);
 
@@ -125,7 +125,7 @@ int main(int argc, char *argv[]) {
     }
 
     csvFile.close();
-    cout << "File saved!" << endl;
+    cout << "File saved as "case32.csv"!" << endl;
 
     return 0;
 }
