@@ -59,7 +59,7 @@ int main(int argc, char *argv[]) {
     int tempYear = openingYear;
 
 
-    char listSeparator=';';
+    char listSeparator=',';
     ofstream csvFile;
     csvFile.open("case31.csv");
 
