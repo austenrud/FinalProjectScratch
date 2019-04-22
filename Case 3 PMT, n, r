@@ -1,4 +1,5 @@
 
+
 #include <iostream>
 #include<cmath>
 #include <fstream>
@@ -108,7 +109,7 @@ int main(int argc, char *argv[]) {
         // if the end of year
         if (tempMonth > 12) {
             // reset month value to january
-            tempMonth = 1;
+            tempMonth = (tempMonth-12);
             // increase year
             tempYear++;
         }
