@@ -1,0 +1,130 @@
+
+#include <iostream>
+#include<cmath>
+#include <fstream>
+
+using namespace std;
+
+// Definition of Schedule class
+class Schedule {
+    // class parameters to be calculated
+    int periodNumber;
+    double openingBalance;
+    double principal;
+    float interestRate;
+    double installment;
+    double closingBalance;
+};
+
+
+
+int main(int argc, char *argv[]) {
+    double r, n, installment;
+    int frequency;
+    int openingMonth, openingYear;
+    int lBound=0, lBoundMonth=1,uBoundMonth=12;
+
+
+    do {
+        cout << "Please provide an installment  equal or bigger than " <<lBound<<endl;
+        cin >> installment;
+    }while (installment<0);
+
+
+
+
+    do
+
+    {
+
+        cout << "Enter an Interest rate in percentage bigger than "<<lBound<< endl;
+        cin >> r;
+    } while (r<=0);
+
+
+    do
+    {
+        cout << "Number of compounding periods bigger than " <<lBound<<endl;
+        cin >> n;
+    } while(n<=0);
+
+
+    do
+    {
+        cout << "Current month in number within the range " <<lBoundMonth<<" to "<<uBoundMonth<< endl;
+        cin >> openingMonth;
+    } while (openingMonth<1 || openingMonth>12);
+
+    cout << "Current year" << endl;
+    cin >> openingYear;
+
+    cout << "Frequency (1: monthly, 3: quarterly, 6: semi-annually, 12: annually)" << endl;
+    cin >> frequency;
+
+
+    double periodicInterestRate = r/(12/frequency);
+    double temp=(pow((1+periodicInterestRate), n))-1; // temp OK
+    double PV=installment/(periodicInterestRate*(1+(1/temp)));
+    double openingBalance = PV;
+
+
+    double interest = openingBalance*periodicInterestRate;
+
+    double principal = installment-interest;
+
+
+    double closingBalance = openingBalance-principal;
+    // variables holding current month and year values (at each row)
+    int tempMonth = openingMonth;
+    int tempYear = openingYear;
+
+
+    char listSeparator=';';
+    ofstream csvFile;
+    csvFile.open("case32.csv");
+
+
+
+//for (int j=1;j<9;j++)
+//{
+    csvFile<<"Case 3_2:"<<listSeparator<<"Fixed principal interest payments and instalments given PMT,n and r"<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<endl;
+//}
+
+    csvFile<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<endl;
+    csvFile<<"input"<<listSeparator<<"PV"<<listSeparator<<PV<<endl;
+    csvFile<<""<<listSeparator<<"frequency"<<listSeparator<<frequency<<endl;
+    csvFile<<""<<listSeparator<<"# of periods"<<listSeparator<<n<<endl;
+    csvFile<<""<<listSeparator<<"interest rate"<<listSeparator<<r<<endl;
+    csvFile<<""<<listSeparator<<"start month"<<listSeparator<<openingMonth<<endl;
+    csvFile<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<endl;
+
+
+    csvFile<<"PN"<<listSeparator<<"Date"<<listSeparator<<"OB"<<listSeparator<<"Princ"<<listSeparator<<"r"<<listSeparator<<"inter"<<listSeparator<<"install"<<listSeparator<<"CB"<<endl;
+    for (int i = 1; i <= n; i++) {
+        csvFile<<i<<listSeparator<<tempMonth<<"/"<<tempYear<<listSeparator<<openingBalance<<listSeparator<<principal<<listSeparator<<periodicInterestRate<<listSeparator<<interest<<listSeparator<<installment<<listSeparator<<closingBalance<<endl;
+        // temporary month value to be recalculated after each iteration
+        // at each iteration increase month value by frequency
+        tempMonth += frequency;
+        // if the end of year
+        if (tempMonth > 12) {
+            // reset month value to january
+            tempMonth = 1;
+            // increase year
+            tempYear++;
+        }
+        openingBalance = closingBalance;
+        interest = openingBalance*periodicInterestRate;
+        principal=installment-interest;
+
+        closingBalance = openingBalance-principal;
+
+
+
+
+    }
+
+    csvFile.close();
+    cout << "File saved!" << endl;
+
+    return 0;
+}
