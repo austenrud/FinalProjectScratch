@@ -60,7 +60,7 @@ int main(int argc, char *argv[]) {
     // PV=0, n=0, installment; <- these are defined in the header
 
     int t1 = 0, t2 = 0, t3 = 0, t4 = 0;
-    double margin, floatRateMean, floatRateStd, desiredMean, desiredVar, desiredStd, p;
+
     while (!((variableChoice == 1 || variableChoice == 0) || t1 != 0)) {
         do {
             cout << "Please provide an installment equal or bigger than " << lBound << endl;
@@ -86,6 +86,7 @@ int main(int argc, char *argv[]) {
     }
 
     // SO we want put extra if for margin + box Muller here:
+    double margin, floatRateMean, floatRateStd, desiredMean, desiredVar, p;
     while (!(variableChoice == 4 || t4 != 0)) {
         do {
             if (caseChoice==1) {
@@ -100,8 +101,8 @@ int main(int argc, char *argv[]) {
                 floatRateMean=desiredMean;
                 cout << "Please provide standard deviation of parametrised normal distribution: ";
                 cin >>  floatRateStd;
-                desiredVar=pow(desiredStd,2);
-                p=boxMuller(desiredMean,desiredStd);
+                desiredVar=pow(floatRateStd,2);
+                p=boxMuller(desiredMean,desiredVar);
                 r=p+margin;
             }
         } while (r<=0);
@@ -214,7 +215,6 @@ int main(int argc, char *argv[]) {
             interest = openingBalance * periodicInterestRate;
             installment = principal + interest;
             closingBalance = openingBalance - principal;
-
         }
     }
     else
@@ -255,7 +255,6 @@ int main(int argc, char *argv[]) {
                 interest = openingBalance * periodicInterestRate;
                 installment = principal + interest;
                 closingBalance = openingBalance - principal;
-
             }
         }
         else
@@ -297,21 +296,13 @@ int main(int argc, char *argv[]) {
                 principal = installment - interest;
 
                 closingBalance = openingBalance - principal;
-
             }
-
         }
-
     }
-
 
     csvFile.close();
     // add other cout outputs here
     cout << "File saved as case3_x.csv!" << endl;
-
-
-
-
 
     return 0;
 }
