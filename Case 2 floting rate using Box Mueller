@@ -4,6 +4,7 @@
 #include <random>
 #include<cstdlib>
 #include <ctime>
+
 double boxMuller(double pmean, double pvar){
 
     double x, y, s, z, p;
@@ -23,35 +24,6 @@ double boxMuller(double pmean, double pvar){
 using namespace std;
 
 
-void checkBoxMullerFunction() {
-
-    int i, iter = 10000;
-    double p, desiredMean, desiredVar, sum = 0, var = 0;
-
-    srand((unsigned)time(0));
-
-    //cout << "Please provide desired mean of parametrised normal distribution: ";
-    //cin >> desiredMean;
-    //cout << "Please provide desired variance of parametrised normal distribution: ";
-    //cin >>  desiredVar;
-
-    for (i = 0; i < iter; ++i)
-    {
-        p = boxMuller(desiredMean, desiredVar);
-        sum += p;
-        var += p * p;
-    }
-
-    cout << "Mean is supposed to be: " << desiredMean << endl;
-    cout << "..and the sample mean is: " << sum / iter << endl;
-
-    var /= iter;
-    var = var - sum * sum / (iter * iter);
-
-    cout << "Variance is supposed to be: " << desiredVar << endl;
-    cout << "..and the sample variance is: " << var << endl;
-
-}
 
 #include <iostream>
 
@@ -102,9 +74,9 @@ int main(int argc, char *argv[]) {
     floatRateMean=desiredMean;
 
     double desiredVar;
-    cout << "Please provide desired variance of parametrised normal distribution: ";
-    cin >>  desiredVar;
-    floatRateStd=pow(desiredVar,0.5);
+    cout << "Please provide desired standard deviation of parametrised normal distribution: ";
+    cin >>  floatRateStd;
+    desiredVar=pow(floatRateStd,2);
 
 p=boxMuller(desiredMean,desiredVar);
     r=p+margin;
