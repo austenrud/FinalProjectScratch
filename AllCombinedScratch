@@ -1,98 +1,92 @@
-//
-// Created by Austen on 22/04/2019.
-//
 
 #include <iostream>
-#include<cmath>
+#include <cmath>
 #include <fstream>
-#include <string>
 #include "finalFormulas.h"
+#include <chrono>
+#include <random>
+#include <cstdlib>
+#include <ctime>
+
 
 
 using namespace std;
 
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     int frequency;
     int openingMonth, openingYear;
     int lBound = 0, uBound = 1, lBoundMonth = 1, uBoundMonth = 12;
-    bool caseChoice;
+
     cout << "Welcome to the Loan Payment Schedule Program!" << endl;
+    bool caseChoice;
     cout << "Floating (0) or Fixed (1) ?" << endl;
     cin >> caseChoice;
 
-    cout << "Please enter the current year: " << endl;
+    cout << "Please enter the current year" << endl;
     cin >> openingYear;
 
-    do
-    {
-        cout << "Current month in number within the range " <<lBoundMonth<<" to "<<uBoundMonth<< endl;
+    do {
+        cout << "Current month in number within the range " << lBoundMonth << " to " << uBoundMonth << endl;
         cin >> openingMonth;
-    } while (openingMonth<1 || openingMonth>12);
-
-    do
-    {
-        cout << "Please enter Payment Frequency: \n 1: monthly \n 3: quarterly \n 6: semi-annually \n 12: annually \n";
-        cin >> frequency;
-    } while (!(frequency==1 || frequency==3 || frequency==6 || frequency==12));
-
-
-    //bool choice;
-    //cout << "Would you like to consider cases with variable interest rates (0) or fixed interest rates (1)?" << endl;
-    // enter a do while statement here to get user to type 0 or 1 - if we do this, will always get true? do we need to prevent other numbers?
-    //cin >> choice;
-
-
-    // Case One and Three Code: Fixed Interest Rate Cases:
-
-
-    int variableChoice;
+    } while (openingMonth < 1 || openingMonth > 12);
 
     do {
-        cout << "Which variable is still undefined? \n 0. All inputs known \n 1. Installment \n 2. Present value \n 3. Number of compounding periods \n 4. r" << endl;
+        cout << "Please enter Payment Frequency: \n 1: monthly \n 3: quarterly \n 6: semi-annually \n 12: annually \n";
+        cin >> frequency;
+    } while (!(frequency == 1 || frequency == 3 || frequency == 6 || frequency == 12));
+
+
+    //  bool choice;
+    //  cout << "Would you like to consider cases with variable interest rates (0) or fixed interest rates (1)?" << endl;
+    //  // enter a do while statement here to get user to type 0 or 1 - if we do this, will always get true? do we need to prevent other numbers?
+    //  cin >> choice;
+
+
+    // Case Three Code
+
+    int variableChoice;
+    do {
+        cout
+                << "Which variable is still undefined? \n 0. All inputs known \n 1. Installment \n 2. Present value \n 3. Number of compounding periods \n 4. r"
+                << endl;
         cin >> variableChoice;
-    }while (!(variableChoice==0 || variableChoice==1 || variableChoice==2 || variableChoice==3 || variableChoice==4));
+    } while (!(variableChoice == 0 || variableChoice == 1 || variableChoice == 2 || variableChoice == 3 ||
+               variableChoice == 4));
 
-
-    // create nested if/else if statements here
+    // create nested if/ifelse statements here
     // Payment, PresentValue, N R
-    double r=0;
+    double r = 0;
     // PV=0, n=0, installment; <- these are defined in the header
 
-    int t1=0, t2=0, t3=0, t4=0;
-    while (!(variableChoice == 1 || t1!=0))
-    {
+    int t1 = 0, t2 = 0, t3 = 0, t4 = 0;
+    double margin, floatRateMean, floatRateStd, desiredMean, desiredVar, desiredStd, p;
+    while (!((variableChoice == 1 || variableChoice == 0) || t1 != 0)) {
         do {
-            cout << "Please provide an installment equal or bigger than " <<lBound<<endl;
+            cout << "Please provide an installment equal or bigger than " << lBound << endl;
             cin >> installment;
-        }while (installment<0);
+        } while (installment < 0);
         t1++;
     }
 
-    while (!(variableChoice == 2 || t2!=0))
-    {
+    while (!(variableChoice == 2 || t2 != 0)) {
         do {
-            cout << "Please provide a Present Value equal or bigger than " <<lBound<<endl;
+            cout << "Please provide a Present Value equal or bigger than " << lBound << endl;
             cin >> PV;
-        }while (PV<=0); // Does this work if PV = 0 ?
+        } while (PV <= 0); // Does this work if PV = 0 ?
         t2++;
     }
 
-    while (!(variableChoice == 3 || t3!=0))
-    {
+    while (!(variableChoice == 3 || t3 != 0)) {
         do {
-            cout << "Number of compounding periods bigger than " <<lBound<<endl;
+            cout << "Number of compounding periods bigger than " << lBound << endl;
             cin >> n;
-        } while(n<=0); // Does this work if n = 0 ?
+        } while (n <= 0); // Does this work if n = 0 ?
         t3++;
     }
 
-
-    double margin, floatRateMean,floatRateStd, desiredMean, desiredVar, desiredStd, p;
-
-    while (!(variableChoice == 4 || t4!=0))
-    {
+    // SO we want put extra if for margin + box Muller here:
+    while (!(variableChoice == 4 || t4 != 0)) {
         do {
             if (caseChoice==1) {
                 cout << "Enter an Interest rate (in decimal form) bigger than " << lBound << endl;
@@ -114,129 +108,210 @@ int main(int argc, char *argv[])
         t4++;
     }
 
+    double openingBalance = 0, interest = 0, principal = 0, closingBalance = 0, installment = 0, periodicInterestRate = 0;
 
     //double periodicInterestRate; defined in the header
-    double openingBalance, principal, interest;
-
-    if (variableChoice ==1) // installment
+    if (variableChoice == 0)  // case 1
     {
-        openingBalance=PV;
-        periodicInterestRate = r/(12/frequency);
-        double temp=(pow((1+periodicInterestRate), n))-1; // temp OK
-        installment=(PV*periodicInterestRate)*(1+(1/temp));
-        interest=openingBalance*periodicInterestRate;
-        principal=installment-interest;
-    }
-    else if (variableChoice==2) // present value
-    {
-        periodicInterestRate = r/(12/frequency);
-        double temp=(pow((1+periodicInterestRate), n))-1; // temp OK
-        PV=installment/(periodicInterestRate*(1+(1/temp)));
-        openingBalance=PV;
-        interest=openingBalance*periodicInterestRate;
-        principal=installment-interest;
-    }
-    else if (variableChoice==3) // n
-    {
-        periodicInterestRate = r/(12/frequency);
-        n=log((installment/PV)/((installment/PV)-periodicInterestRate))/(log(1+periodicInterestRate))+1; // added +1 here, file terminated at period 119
-        double temp=(pow((1+periodicInterestRate), n))-1; // temp OK
-        // THere was a present value here
-        openingBalance=PV;
-        interest=openingBalance*periodicInterestRate;
-        principal=installment-interest;
-
-
-    }
-    else if (variableChoice==4) // r
-    {
-        binarySearch(lBound, uBound);
-        r=periodicInterestRate*(12 / frequency);
-        openingBalance=PV;
-        interest=openingBalance*periodicInterestRate;
-        principal=installment-interest;
-    }
-    else
-    {
-        periodicInterestRate = r/(12/frequency);
+        openingBalance = PV;
+        principal = PV / n;
+        periodicInterestRate = r / (12 / frequency);
+        interest = openingBalance * periodicInterestRate;
+        installment = principal + interest;
+        closingBalance = openingBalance - principal;
+    } else {
+        if (variableChoice == 1) // installment
+        {
+            periodicInterestRate = r / (12 / frequency);
+            double temp = (pow((1 + periodicInterestRate), n)) - 1; // temp OK
+            installment = (PV * periodicInterestRate) * (1 + (1 / temp));
+        } else if (variableChoice == 2) // present value
+        {
+            periodicInterestRate = r / (12 / frequency);
+            double temp = (pow((1 + periodicInterestRate), n)) - 1; // temp OK
+            PV = installment / (periodicInterestRate * (1 + (1 / temp)));
+        } else if (variableChoice == 3) // n
+        {
+            periodicInterestRate = r / (12 / frequency);
+            n = log((installment / PV) / ((installment / PV) - periodicInterestRate)) /
+                (log(1 + periodicInterestRate)) + 1; // added +1 here, file terminated at period 119
+        } else // r
+        {
+            binarySearch(lBound, uBound);
+            r = periodicInterestRate * (12 / frequency);
+        }
+        openingBalance = PV;
+        interest = openingBalance * periodicInterestRate;
+        principal = installment - interest;
+        closingBalance = openingBalance - principal;
     }
 
-    //double openingBalance = PV;
-    //double interest = openingBalance*periodicInterestRate;
-    //double principal = installment-interest;
-
-    // These are included in all cases
-    double closingBalance = openingBalance-principal;
     // variables holding current month and year values (at each row)
     int tempMonth = openingMonth; // defined as double in some cases?
     int tempYear = openingYear;
 
+    cout << "Testing output" << periodicInterestRate << endl;
+    cout << "r rate " << r << endl;
 
-    char listSeparator=',';
-   // ofstream csvFile;
+    char listSeparator = ',';
+    ofstream csvFile;
 
-    if (variableChoice==1)
-    {
+    if (variableChoice == 0) {
+        csvFile.open("case1.csv");
+    } else if (variableChoice == 1) {
         csvFile.open("case3_1.csv");
-    }
-    else if (variableChoice==2)
-    {
+    } else if (variableChoice == 2) {
         csvFile.open("case3_2.csv");
-    }
-    else if (variableChoice==3)
-    {
+    } else if (variableChoice == 3) {
         csvFile.open("case3_3.csv");
-    }
-    else if (variableChoice==4)
-    {
+    } else {
         csvFile.open("case3_4.csv");
     }
-    else if (caseChoice==0)
+
+    if (caseChoice == 0)
     {
-        csvFile.open("case2.csv");
+        csvFile << "Case 2:" << listSeparator
+                << "Fixed principal interest payments and margin + parametrised, normally distributed floating interest rate"
+                << listSeparator << "" << listSeparator << "" << listSeparator << "" << listSeparator << ""
+                << listSeparator << "" << listSeparator << "" << endl;
+
+        csvFile << "" << listSeparator << "" << listSeparator << "" << listSeparator << "" << listSeparator << ""
+                << listSeparator << "" << listSeparator << "" << listSeparator << "" << endl;
+        csvFile << "input" << listSeparator << "PV" << listSeparator << PV << endl;
+        csvFile << "" << listSeparator << "frequency" << listSeparator << frequency << endl;
+        csvFile << "" << listSeparator << "# of periods" << listSeparator << n << endl;
+        csvFile << "" << listSeparator << "margin" << listSeparator << margin << endl;
+        csvFile << "" << listSeparator << "floating rate mean" << listSeparator << floatRateMean << endl;
+        csvFile << "" << listSeparator << "floating rate st dev" << listSeparator << floatRateStd << endl;
+        csvFile << "" << listSeparator << "start month" << listSeparator << openingMonth << endl;
+        csvFile << "" << listSeparator << "" << listSeparator << "" << listSeparator << "" << listSeparator << ""
+                << listSeparator << "" << listSeparator << "" << listSeparator << "" << endl;
+
+
+        csvFile << "PN" << listSeparator << "Date" << listSeparator << "OB" << listSeparator << "Princ" << listSeparator
+                << "Floating rate" << listSeparator << "r" << listSeparator << "Interest" << listSeparator << "install"
+                << listSeparator << "CB" << endl;
+        for (int i = 1; i <= n; i++) {
+            csvFile << i << listSeparator << tempMonth << "/" << tempYear << listSeparator << openingBalance
+                    << listSeparator << principal << listSeparator << p << listSeparator << periodicInterestRate
+                    << listSeparator << interest << listSeparator << installment << listSeparator << closingBalance
+                    << endl;
+            // temporary month value to be recalculated after each iteration
+            // at each iteration increase month value by frequency
+            tempMonth += frequency;
+            // if the end of year
+            if (tempMonth > 12) {
+                // reset month value to january
+                tempMonth = 1;
+                // increase year
+                tempYear++;
+            }
+
+            p = boxMuller(desiredMean, desiredVar);
+            r = margin + p;
+            periodicInterestRate = r / (12 / frequency);
+            openingBalance = closingBalance;
+            interest = openingBalance * periodicInterestRate;
+            installment = principal + interest;
+            closingBalance = openingBalance - principal;
+
+        }
     }
     else
     {
-        csvFile.open("case1.csv");
-    }
-
-
-
-    if (caseChoice==0)
-    {
-        csvFile<<"Case 2: "<<listSeparator<<"Fixed principal payments and margin + parameterized, normally distributed floating interest rate"<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<endl;
-        csvFloat();
-        csvFile.close();
-        cout << "File saved as case2.csv!" << endl;
-    }
-    else
-    {
-        if (variableChoice==0)
+        if (variableChoice == 0)
         {
-            csvFile<<"Case 3: "<<listSeparator<<"Fixed interest rate and installments, given 3 of 4 input variables"<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<endl;
-            csvFixed(tempMonth, tempYear, frequency, openingBalance, principal, periodicInterestRate, interest, installment, closingBalance);
-            csvFile.close();
-            cout << "File saved as case3_x.csv!" << endl;
+            csvFile << "Case 1" << listSeparator << "Test2" << listSeparator << "" << listSeparator << ""
+                    << listSeparator << "" << listSeparator << "" << listSeparator << "" << listSeparator << "" << endl;
+            csvFile << "" << listSeparator << "" << listSeparator << "" << listSeparator << "" << listSeparator << ""
+                    << listSeparator << "" << listSeparator << "" << listSeparator << "" << endl;
+            csvFile << "input" << listSeparator << "PV" << listSeparator << PV << endl;
+            csvFile << "" << listSeparator << "frequency" << listSeparator << frequency << endl;
+            csvFile << "" << listSeparator << "# of periods" << listSeparator << n << endl;
+            csvFile << "" << listSeparator << "interest rate" << listSeparator << r << endl;
+            csvFile << "" << listSeparator << "start month" << listSeparator << openingMonth << endl;
+            csvFile << "" << listSeparator << "" << listSeparator << "" << listSeparator << "" << listSeparator << ""
+                    << listSeparator << "" << listSeparator << "" << listSeparator << "" << endl;
+
+
+            csvFile << "Period Number" << listSeparator << "Date" << listSeparator << "Opening Balance" << listSeparator
+                    << "Principal" << listSeparator << "r" << listSeparator << "Interest" << listSeparator
+                    << "Installments" << listSeparator << "Closing Balance" << endl;
+            for (int i = 1; i <= n; i++) {
+                csvFile << i << listSeparator << tempMonth << "/" << tempYear << listSeparator << openingBalance
+                        << listSeparator << principal << listSeparator << periodicInterestRate << listSeparator
+                        << interest << listSeparator << installment << listSeparator << closingBalance << endl;
+                // temporary month value to be recalculated after each iteration
+                // at each iteration increase month value by frequency
+                tempMonth += frequency;
+                // if the end of year
+                if (tempMonth > 12) {
+                    // reset month value to january
+                    tempMonth = (tempMonth - 12);
+                    // increase year
+                    tempYear++;
+                }
+                openingBalance = closingBalance;
+                interest = openingBalance * periodicInterestRate;
+                installment = principal + interest;
+                closingBalance = openingBalance - principal;
+
+            }
         }
         else
         {
-            csvFile<<"Case 1: "<<listSeparator<<"Fixed principal payments and fixed interest rate"<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<endl;
-            csvFixed(tempMonth, tempYear, frequency, openingBalance, principal, periodicInterestRate, interest, installment, closingBalance);
-            csvFile.close();
-            cout << "File saved as case1.csv!" << endl;
+            csvFile << "Case 3: " << listSeparator
+                    << "Fixed principal interest payments and instalments given three variables" << listSeparator << ""
+                    << listSeparator << "" << listSeparator << "" << listSeparator << "" << listSeparator << ""
+                    << listSeparator << "" << endl;
+            csvFile << "" << listSeparator << "" << listSeparator << "" << listSeparator << "" << listSeparator << ""
+                    << listSeparator << "" << listSeparator << "" << listSeparator << "" << endl;
+            csvFile << "input" << listSeparator << "PV" << listSeparator << PV << endl;
+            csvFile << "" << listSeparator << "frequency" << listSeparator << frequency << endl;
+            csvFile << "" << listSeparator << "# of periods" << listSeparator << n << endl;
+            csvFile << "" << listSeparator << "interest rate" << listSeparator << r << endl;
+            csvFile << "" << listSeparator << "start month" << listSeparator << openingMonth << endl;
+            csvFile << "" << listSeparator << "" << listSeparator << "" << listSeparator << "" << listSeparator << ""
+                    << listSeparator << "" << listSeparator << "" << listSeparator << "" << endl;
+
+
+            csvFile << "Period Number" << listSeparator << "Date" << listSeparator << "Opening Balance" << listSeparator
+                    << "Principal" << listSeparator << "r" << listSeparator << "Interest" << listSeparator
+                    << "Installments" << listSeparator << "Closing Balance" << endl;
+            for (int i = 1; i <= n; i++) {
+                csvFile << i << listSeparator << tempMonth << "/" << tempYear << listSeparator << openingBalance
+                        << listSeparator << principal << listSeparator << periodicInterestRate << listSeparator
+                        << interest << listSeparator << installment << listSeparator << closingBalance << endl;
+                // temporary month value to be recalculated after each iteration
+                // at each iteration increase month value by frequency
+                tempMonth += frequency;
+                // if the end of year
+                if (tempMonth > 12) {
+                    // reset month value to january
+                    tempMonth = (tempMonth - 12);
+                    // increase year
+                    tempYear++;
+                }
+                openingBalance = closingBalance;
+                interest = openingBalance * periodicInterestRate;
+                principal = installment - interest;
+
+                closingBalance = openingBalance - principal;
+
+            }
+
         }
-    }
-
-
-
-    if (variableChoice==0)
-    {
 
     }
-    else
-    {
 
-    }
+
+    csvFile.close();
+    // add other cout outputs here
+    cout << "File saved as case3_x.csv!" << endl;
+
+
+
+
 
     return 0;
 }
