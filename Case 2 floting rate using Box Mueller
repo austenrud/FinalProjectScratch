@@ -1,11 +1,9 @@
-#include <iostream>
 #include<cmath>
 #include <fstream>
 #include <chrono>
 #include <random>
 #include<cstdlib>
 #include <ctime>
-
 double boxMuller(double pmean, double pvar){
 
     double x, y, s, z, p;
@@ -22,8 +20,8 @@ double boxMuller(double pmean, double pvar){
     return p;
 }
 
-
 using namespace std;
+
 
 void checkBoxMullerFunction() {
 
@@ -54,6 +52,8 @@ void checkBoxMullerFunction() {
     cout << "..and the sample variance is: " << var << endl;
 
 }
+
+#include <iostream>
 
 
 
@@ -109,8 +109,6 @@ int main(int argc, char *argv[]) {
 p=boxMuller(desiredMean,desiredVar);
     r=p+margin;
 
-
-
     do
     {
         cout << "Number of compounding periods bigger than " <<lBound<<endl;
@@ -162,9 +160,9 @@ p=boxMuller(desiredMean,desiredVar);
     csvFile<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<endl;
 
 
-    csvFile<<"PN"<<listSeparator<<"Date"<<listSeparator<<"OB"<<listSeparator<<"Princ"<<listSeparator<<"r"<<listSeparator<<"inter"<<listSeparator<<"install"<<listSeparator<<"CB"<<endl;
+    csvFile<<"PN"<<listSeparator<<"Date"<<listSeparator<<"OB"<<listSeparator<<"Princ"<<listSeparator<<"Floating rate"<<listSeparator<<"r"<<listSeparator<<"inter"<<listSeparator<<"install"<<listSeparator<<"CB"<<endl;
     for (int i = 1; i <= n; i++) {
-        csvFile<<i<<listSeparator<<tempMonth<<"/"<<tempYear<<listSeparator<<openingBalance<<listSeparator<<principal<<listSeparator<<periodicInterestRate<<listSeparator<<interest<<listSeparator<<installment<<listSeparator<<closingBalance<<endl;
+        csvFile<<i<<listSeparator<<tempMonth<<"/"<<tempYear<<listSeparator<<openingBalance<<listSeparator<<principal<<listSeparator<<p<<listSeparator<<periodicInterestRate<<listSeparator<<interest<<listSeparator<<installment<<listSeparator<<closingBalance<<endl;
         // temporary month value to be recalculated after each iteration
         // at each iteration increase month value by frequency
         tempMonth += frequency;
