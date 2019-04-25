@@ -1,0 +1,198 @@
+#include <iostream>
+#include<cmath>
+#include <fstream>
+#include <chrono>
+#include <random>
+#include<cstdlib>
+#include <ctime>
+
+double boxMuller(double pmean, double pvar){
+
+    double x, y, s, z, p;
+
+    do {
+        x = ((double) rand() * 2 / RAND_MAX) - 1;
+        y = ((double) rand() * 2 / RAND_MAX) - 1;
+        s = x * x + y * y;
+    } while (s > 1);
+
+    z = x * sqrt(-2 * log(s) / s);
+    p = sqrt(pvar) * z + pmean;
+
+    return p;
+}
+
+
+using namespace std;
+
+void checkBoxMullerFunction() {
+
+    int i, iter = 10000;
+    double p, desiredMean, desiredVar, sum = 0, var = 0;
+
+    srand((unsigned)time(0));
+
+    //cout << "Please provide desired mean of parametrised normal distribution: ";
+    //cin >> desiredMean;
+    //cout << "Please provide desired variance of parametrised normal distribution: ";
+    //cin >>  desiredVar;
+
+    for (i = 0; i < iter; ++i)
+    {
+        p = boxMuller(desiredMean, desiredVar);
+        sum += p;
+        var += p * p;
+    }
+
+    cout << "Mean is supposed to be: " << desiredMean << endl;
+    cout << "..and the sample mean is: " << sum / iter << endl;
+
+    var /= iter;
+    var = var - sum * sum / (iter * iter);
+
+    cout << "Variance is supposed to be: " << desiredVar << endl;
+    cout << "..and the sample variance is: " << var << endl;
+
+}
+
+
+
+// Definition of Schedule class
+class Schedule {
+    // class parameters to be calculated
+    int periodNumber;
+    double openingBalance;
+    double principal;
+    float interestRate;
+    double installment;
+    double closingBalance;
+};
+
+// present value is substructed from the opening value for each period
+double PMT(double r, double PMT, double temp, double PV, double n) {
+    temp=(pow((1+r), n))-1; // temp OK
+    PMT= PV*(r+(r/temp));
+    return PMT;
+}
+
+int main(int argc, char *argv[]) {
+    double r, PMT, temp, PV, n,p;
+    int frequency;
+    int openingMonth, openingYear;
+    int lBound=0, lBoundMonth=1,uBoundMonth=12;
+    double margin, floatRateMean,floatRateStd;
+
+
+    do {
+        cout << "Please provide a PV equal or bigger than " <<lBound<<endl;
+        cin >> PV;
+    }while (PV<0);
+
+
+    do
+    {
+        cout << "Enter a margin rate in percentage bigger or equal than "<<lBound<<":"<< endl;
+        cin >> margin;
+    }while (margin<0);
+
+    double desiredMean;
+
+    cout << "Please provide desired mean of parametrised normal distribution: ";
+    cin >> desiredMean;
+    floatRateMean=desiredMean;
+
+    double desiredVar;
+    cout << "Please provide desired variance of parametrised normal distribution: ";
+    cin >>  desiredVar;
+    floatRateStd=pow(desiredVar,0.5);
+
+p=boxMuller(desiredMean,desiredVar);
+    r=p+margin;
+
+
+
+    do
+    {
+        cout << "Number of compounding periods bigger than " <<lBound<<endl;
+        cin >> n;
+    } while(n<=0);
+
+
+    do
+    {
+        cout << "Current month in number within the range " <<lBoundMonth<<" to "<<uBoundMonth<< endl;
+        cin >> openingMonth;
+    } while (openingMonth<1 || openingMonth>12);
+
+    cout << "Current year" << endl;
+    cin >> openingYear;
+
+    cout << "Frequency (1: monthly, 3: quarterly, 6: semi-annually, 12: annually)" << endl;
+    cin >> frequency;
+    double openingBalance = PV;
+    double principal = PV/n;
+    double periodicInterestRate = r/(12/frequency);
+    double interest = openingBalance*periodicInterestRate;
+    double installment = principal+interest;
+    double closingBalance = openingBalance-principal;
+    // variables holding current month and year values (at each row)
+    int tempMonth = openingMonth;
+    int tempYear = openingYear;
+
+
+    char listSeparator=';';
+    ofstream csvFile;
+    csvFile.open("case2.csv");
+
+
+
+//for (int j=1;j<9;j++)
+//{
+    csvFile<<"Case 2:"<<listSeparator<<"Fixed principal interest payments and margin + parametrised, normally distribuited floating interest rate"<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<endl;
+//}
+
+    csvFile<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<endl;
+    csvFile<<"input"<<listSeparator<<"PV"<<listSeparator<<PV<<endl;
+    csvFile<<""<<listSeparator<<"frequency"<<listSeparator<<frequency<<endl;
+    csvFile<<""<<listSeparator<<"# of periods"<<listSeparator<<n<<endl;
+    csvFile<<""<<listSeparator<<"margin"<<listSeparator<<margin<<endl;
+    csvFile<<""<<listSeparator<<"floating rate mean"<<listSeparator<<floatRateMean<<endl;
+    csvFile<<""<<listSeparator<<"floating rate st dev"<<listSeparator<<floatRateStd<<endl;
+    csvFile<<""<<listSeparator<<"start month"<<listSeparator<<openingMonth<<endl;
+    csvFile<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<listSeparator<<""<<endl;
+
+
+    csvFile<<"PN"<<listSeparator<<"Date"<<listSeparator<<"OB"<<listSeparator<<"Princ"<<listSeparator<<"r"<<listSeparator<<"inter"<<listSeparator<<"install"<<listSeparator<<"CB"<<endl;
+    for (int i = 1; i <= n; i++) {
+        csvFile<<i<<listSeparator<<tempMonth<<"/"<<tempYear<<listSeparator<<openingBalance<<listSeparator<<principal<<listSeparator<<periodicInterestRate<<listSeparator<<interest<<listSeparator<<installment<<listSeparator<<closingBalance<<endl;
+        // temporary month value to be recalculated after each iteration
+        // at each iteration increase month value by frequency
+        tempMonth += frequency;
+        // if the end of year
+        if (tempMonth > 12) {
+            // reset month value to january
+            tempMonth = 1;
+            // increase year
+            tempYear++;
+        }
+
+        p=boxMuller(desiredMean,desiredVar);
+        r=margin+p;
+        periodicInterestRate=r/(12/frequency);
+        openingBalance = closingBalance;
+        interest = openingBalance*periodicInterestRate;
+        installment = principal+interest;
+        closingBalance = openingBalance-principal;
+
+
+
+
+
+
+    }
+
+    csvFile.close();
+    cout << "File saved!" << endl;
+
+    return 0;
+}
