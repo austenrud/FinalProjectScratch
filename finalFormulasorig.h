@@ -11,6 +11,10 @@
 #include <iostream>
 #include <cmath>
 #include <fstream>
+#include <chrono>
+#include <random>
+#include <cstdlib>
+#include <ctime>
 
 using namespace std;
 
@@ -47,10 +51,25 @@ double binarySearch(double lBound, double uBound)
     return periodicInterestRate;
 }
 
-// Enter the CSV code here
+// BoxMuller Code in BoxMullerCase2.h
 
+double boxMuller(double pmean, double pvar){
 
+    double x, y, s, z, p;
+
+    do {
+        x = ((double) rand() * 2 / RAND_MAX) - 1;
+        y = ((double) rand() * 2 / RAND_MAX) - 1;
+        s = x * x + y * y;
+    } while (s > 1);
+
+    z = x * sqrt(-2 * log(s) / s);
+    p = sqrt(pvar) * z + pmean;
+
+    return p;
+}
 
 
 
 #endif //UNTITLED4_FINALFORMULAS_H
+
