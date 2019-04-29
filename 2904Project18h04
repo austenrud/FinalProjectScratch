@@ -167,7 +167,7 @@ int main(int argc, char *argv[]) {
     int tempMonth = openingMonth; // defined as double in some cases?
     int tempYear = openingYear;
 
-    cout << "Testing output" << periodicInterestRate << endl;
+    cout << "Testing output " << periodicInterestRate << endl;
     cout << "r rate " << r << endl;
     cout << binarySearch(lBound, uBound);
     char listSeparator = ';';
@@ -207,9 +207,9 @@ int main(int argc, char *argv[]) {
                 << listSeparator << "" << listSeparator << "" << listSeparator << "" << endl;
 
 
-        csvFile << "PN" << listSeparator << "Date" << listSeparator << "OB" << listSeparator << "Princ" << listSeparator
-                << "Floating rate" << listSeparator << "r" << listSeparator << "Interest" << listSeparator << "install"
-                << listSeparator << "CB" << endl;
+        csvFile << "period #" << listSeparator << "period" << listSeparator << "opening balance" << listSeparator << "principal" << listSeparator
+                << "floating rate" << listSeparator << "periodic interest rate" << listSeparator << "interest" << listSeparator << "installment"
+                << listSeparator << "closing balance" << endl;
         for (int i = 1; i <= n; i++) {
             csvFile << setprecision(2) << fixed;
             csvFile << i << listSeparator << tempMonth << "/" << tempYear << listSeparator << openingBalance
@@ -254,9 +254,9 @@ int main(int argc, char *argv[]) {
                     << listSeparator << "" << listSeparator << "" << listSeparator << "" << endl;
 
 
-            csvFile << "Period Number" << listSeparator << "Date" << listSeparator << "Opening Balance" << listSeparator
-                    << "Principal" << listSeparator << "r" << listSeparator << "Interest" << listSeparator
-                    << "Installments" << listSeparator << "Closing Balance" << endl;
+            csvFile << "period #" << listSeparator << "period" << listSeparator << "opening balance" << listSeparator << "principal" << listSeparator
+                    << "periodic interest rate" << listSeparator << "interest" << listSeparator << "installment"
+                    << listSeparator << "closing balance" << endl;
             for (int i = 1; i <= n; i++) {
                 csvFile << setprecision(2) << fixed;
                 csvFile << i << listSeparator << tempMonth << "/" << tempYear << listSeparator << openingBalance
@@ -296,9 +296,9 @@ int main(int argc, char *argv[]) {
                     << listSeparator << "" << listSeparator << "" << listSeparator << "" << endl;
 
 
-            csvFile << "Period Number" << listSeparator << "Date" << listSeparator << "Opening Balance" << listSeparator
-                    << "Principal" << listSeparator << "r" << listSeparator << "Interest" << listSeparator
-                    << "Installments" << listSeparator << "Closing Balance" << endl;
+            csvFile << "period #" << listSeparator << "period" << listSeparator << "opening balance" << listSeparator << "principal" << listSeparator
+                    << "periodic interest rate" << listSeparator << "interest" << listSeparator << "installment"
+                    << listSeparator << "closing balance" << endl;
             for (int i = 1; i <= n; i++) {
                 csvFile << setprecision(2) << fixed;
                 csvFile << i << listSeparator << tempMonth << "/" << tempYear << listSeparator << openingBalance
