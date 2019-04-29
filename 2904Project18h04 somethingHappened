@@ -9,7 +9,6 @@
 #include <ctime>
 
 
-
 using namespace std;
 
 
@@ -36,7 +35,6 @@ int main(int argc, char *argv[]) {
         cout << "Please enter Payment Frequency: \n 1: monthly \n 3: quarterly \n 6: semi-annually \n 12: annually \n";
         cin >> frequency;
     } while (!(frequency == 1 || frequency == 3 || frequency == 6 || frequency == 12));
-    
     
     //  bool choice;
     //  cout << "Would you like to consider cases with variable interest rates (0) or fixed interest rates (1)?" << endl;
@@ -168,7 +166,7 @@ int main(int argc, char *argv[]) {
     
     cout << "Testing output " << periodicInterestRate << endl;
     cout << "r rate " << r << endl;
-    cout << binarySearch(lBound, uBound);
+//    cout << binarySearch(lBound, uBound) << endl;
     char listSeparator = ',';
     ofstream csvFile;
     
@@ -198,9 +196,10 @@ int main(int argc, char *argv[]) {
         csvFile << "input" << listSeparator << "PV" << listSeparator << PV << endl;
         csvFile << "" << listSeparator << "frequency" << listSeparator << frequency << endl;
         csvFile << "" << listSeparator << "# of periods" << listSeparator << n << endl;
-        csvFile << "" << listSeparator << "margin" << listSeparator << margin << endl;
-        csvFile << "" << listSeparator << "floating rate mean" << listSeparator << floatRateMean << endl;
-        csvFile << "" << listSeparator << "floating rate st dev" << listSeparator << floatRateStd << endl;
+        csvFile << setprecision(1) << fixed;
+        csvFile << "" << listSeparator << "margin" << listSeparator << margin*100 << "%" << endl;
+        csvFile << "" << listSeparator << "floating rate mean" << listSeparator << floatRateMean*100 << "%" << endl;
+        csvFile << "" << listSeparator << "floating rate st dev" << listSeparator << floatRateStd*100 << "%" << endl;
         csvFile << "" << listSeparator << "start month" << listSeparator << openingMonth << "/" << openingYear << endl;
         csvFile << "" << listSeparator << "" << listSeparator << "" << listSeparator << "" << listSeparator << ""
         << listSeparator << "" << listSeparator << "" << listSeparator << "" << endl;
@@ -289,7 +288,7 @@ int main(int argc, char *argv[]) {
             csvFile << "input" << listSeparator << "PV" << listSeparator << PV << endl;
             csvFile << "" << listSeparator << "frequency" << listSeparator << frequency << endl;
             csvFile << "" << listSeparator << "# of periods" << listSeparator << n << endl;
-            csvFile << "" << listSeparator << "interest rate" << listSeparator << r << endl;
+            csvFile << "" << listSeparator << "interest rate" << listSeparator << r*100 << "%" << endl;
             csvFile << "" << listSeparator << "start month" << listSeparator << openingMonth << "/" << openingYear << endl;
             csvFile << "" << listSeparator << "" << listSeparator << "" << listSeparator << "" << listSeparator << ""
             << listSeparator << "" << listSeparator << "" << listSeparator << "" << endl;
