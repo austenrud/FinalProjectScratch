@@ -1,5 +1,6 @@
 
 #include <iostream>
+#include <iomanip>
 #include <cmath>
 #include <fstream>
 #include "finalFormulas.h"
@@ -210,6 +211,7 @@ int main(int argc, char *argv[]) {
                 << "Floating rate" << listSeparator << "r" << listSeparator << "Interest" << listSeparator << "install"
                 << listSeparator << "CB" << endl;
         for (int i = 1; i <= n; i++) {
+            csvFile << setprecision(2) << fixed;
             csvFile << i << listSeparator << tempMonth << "/" << tempYear << listSeparator << openingBalance
                     << listSeparator << principal << listSeparator << p << listSeparator << periodicInterestRate
                     << listSeparator << interest << listSeparator << installment << listSeparator << closingBalance
@@ -256,6 +258,7 @@ int main(int argc, char *argv[]) {
                     << "Principal" << listSeparator << "r" << listSeparator << "Interest" << listSeparator
                     << "Installments" << listSeparator << "Closing Balance" << endl;
             for (int i = 1; i <= n; i++) {
+                csvFile << setprecision(2) << fixed;
                 csvFile << i << listSeparator << tempMonth << "/" << tempYear << listSeparator << openingBalance
                         << listSeparator << principal << listSeparator << periodicInterestRate << listSeparator
                         << interest << listSeparator << installment << listSeparator << closingBalance << endl;
@@ -297,6 +300,7 @@ int main(int argc, char *argv[]) {
                     << "Principal" << listSeparator << "r" << listSeparator << "Interest" << listSeparator
                     << "Installments" << listSeparator << "Closing Balance" << endl;
             for (int i = 1; i <= n; i++) {
+                csvFile << setprecision(2) << fixed;
                 csvFile << i << listSeparator << tempMonth << "/" << tempYear << listSeparator << openingBalance
                         << listSeparator << principal << listSeparator << periodicInterestRate << listSeparator
                         << interest << listSeparator << installment << listSeparator << closingBalance << endl;
