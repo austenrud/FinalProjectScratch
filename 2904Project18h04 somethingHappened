@@ -290,7 +290,7 @@ int main(int argc, char *argv[]) {
             csvFile << "" << listSeparator << "frequency" << listSeparator << frequency << endl;
             csvFile << "" << listSeparator << "# of periods" << listSeparator << n << endl;
             csvFile << "" << listSeparator << "interest rate" << listSeparator << r << endl;
-            csvFile << "" << listSeparator << "start month" << listSeparator << openingMonth << endl;
+            csvFile << "" << listSeparator << "start month" << listSeparator << openingMonth << "/" << openingYear << endl;
             csvFile << "" << listSeparator << "" << listSeparator << "" << listSeparator << "" << listSeparator << ""
             << listSeparator << "" << listSeparator << "" << listSeparator << "" << endl;
             
