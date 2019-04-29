@@ -329,7 +329,9 @@ int main(int argc, char *argv[]) {
 
     csvFile.close();
     
-        if (variableChoice == 0) {
+    if (variableChoice == 0 && caseChoice==0) {
+        cout << "File saved as case2.csv!" << endl;
+    } else if (variableChoice == 0) {
         cout << "File saved as case1.csv!" << endl;
     } else if (variableChoice == 1) {
         cout << "File saved as case3_1.csv!" << endl;
