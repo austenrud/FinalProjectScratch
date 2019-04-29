@@ -260,7 +260,7 @@ int main(int argc, char *argv[]) {
             for (int i = 1; i <= n; i++) {
                 csvFile << setprecision(2) << fixed;
                 csvFile << i << listSeparator << tempMonth << "/" << tempYear << listSeparator << openingBalance
-                        << listSeparator << principal << listSeparator << periodicInterestRate << listSeparator
+                        << listSeparator << principal << listSeparator << periodicInterestRate*100 << "%" << listSeparator
                         << interest << listSeparator << installment << listSeparator << closingBalance << endl;
                 // temporary month value to be recalculated after each iteration
                 // at each iteration increase month value by frequency
@@ -302,7 +302,7 @@ int main(int argc, char *argv[]) {
             for (int i = 1; i <= n; i++) {
                 csvFile << setprecision(2) << fixed;
                 csvFile << i << listSeparator << tempMonth << "/" << tempYear << listSeparator << openingBalance
-                        << listSeparator << principal << listSeparator << periodicInterestRate << listSeparator
+                        << listSeparator << principal << listSeparator << periodicInterestRate*100 << "%" << listSeparator
                         << interest << listSeparator << installment << listSeparator << closingBalance << endl;
                 // temporary month value to be recalculated after each iteration
                 // at each iteration increase month value by frequency
