@@ -88,7 +88,7 @@ int main(int argc, char *argv[]) {
     }
 
 
-    double margin, floatRateMean, floatRateStd, desiredMean, desiredVar, p;
+    double margin = 0.0, floatRateMean = 0.0, floatRateStd = 0.0, desiredMean = 0.0, desiredVar = 0.0, p = 0.0;
     while (!(variableChoice == 4 || t4 != 0)) {
         do {
             if (caseChoice==1) {
