@@ -98,10 +98,10 @@ int main(int argc, char *argv[]) {
             else{
                 cout << "Enter a margin rate in percentage bigger or equal than "<<lBound<<":"<< endl;
                 cin >> margin;
-                cout << "Please provide desired mean of parametrised normal distribution: ";
+                cout << "Please provide desired mean of parametrised normal distribution: " << endl;
                 cin >> desiredMean;
                 floatRateMean=desiredMean;
-                cout << "Please provide standard deviation of parametrised normal distribution: ";
+                cout << "Please provide standard deviation of parametrised normal distribution: " << endl;
                 cin >>  floatRateStd;
                 desiredVar=pow(floatRateStd,2);
                 p=boxMuller(desiredMean,desiredVar);
