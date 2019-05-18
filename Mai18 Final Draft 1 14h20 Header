@@ -1,0 +1,48 @@
+// may need to change below to the final project name
+#ifndef UNTITLED4_FINALFORMULAS_H
+#define UNTITLED4_FINALFORMULAS_H
+
+
+// below in the main.cpp are redundant
+
+#include <iostream>
+#include <cmath>
+#include <fstream>
+#include <chrono>
+#include <random>
+#include <cstdlib>
+#include <ctime>
+
+using namespace std;
+
+
+double f(double installment,double PV,double periodicInterestRate, double n) {
+    double temp;
+    temp=periodicInterestRate * (1 + (1 / ((pow(1 + periodicInterestRate, n)) - 1)));
+    temp-= installment / PV;
+    return temp;
+}
+
+
+
+// BoxMuller Code in BoxMullerCase2.h
+
+double boxMuller(double desiredMean, double desiredVar) {
+
+    double x, y, s, z, p;
+
+    do {
+        x = (double) rand() * 2 / RAND_MAX - 1;  // https://stackoverflow.com/questions/11418113/lack-of-randomness-in-c-rand
+        y = (double) rand() * 2 / RAND_MAX - 1;
+        s = x * x + y * y;
+    } while (s > 1);
+
+    z = x * sqrt(-2 * log(s) / s);
+    p = sqrt(desiredVar) * z + desiredMean;
+
+    return p;
+}
+
+
+
+#endif //UNTITLED4_FINALFORMULAS_H
